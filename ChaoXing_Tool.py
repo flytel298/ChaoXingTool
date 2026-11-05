@@ -30,17 +30,7 @@ def signin_interface(browser):
     win_w = sign.winfo_width()
     win_h = sign.winfo_height()
     tk.Label(text='请扫码登录',font=('黑体',15)).place(x=win_w*0.40,y=win_h*0.1)
-    code_iframe=browser.find_element(By.XPATH,'//iframe')
-    browser.switch_to.frame(code_iframe)
-    page_src=browser.find_element(By.XPATH,'//*[@id="ewm"]').get_attribute('src')
-    browser.switch_to.default_content()
     try:
-        response=req.urlopen(page_src)
-        with open('code_page.png','wb') as f:
-            f.write(response.read())
-        img = tk.PhotoImage(file='code_page.png')
-        sign.img = img
-        tk.Label(sign, image=img).place(x=win_w*0.24,y=win_h*0.2)
         start=time.time()
         result = {'done': False, 'ok': False}
         def worker():
@@ -309,14 +299,7 @@ def Initialize(browser):
     completion_form=form(main_window,browser,len(a2))
     with open('data_save/form.json', 'w', encoding='utf-8') as f:
         json.dump(completion_form, f)
-    print('初始化完成，开始课程观看')
-    for i in range(len(completion_form)):
-        if not completion_form[i]:
-            start_zj(browser,i)
-            time.sleep(5)
-            roll_zj(browser)
-            browser.switch_to.window(main_window)
-    time.sleep(20)
+    print('初始化完成，请点击调用以课程观看')
 def Call(browser):
     with open('data_save/form.json', 'r', encoding='utf-8') as f:
         form=json.load(f)
